@@ -17,6 +17,11 @@ fi
 sudo apt update -y
 sudo apt install -y curl git unzip
 
+# Needed for debian installers
+if [ "$DISTRO" == "debian" ]; then
+        sudo apt install -y snapd
+fi
+
 # Ensure computer doesn't go to sleep or lock while installing
 gsettings set org.gnome.desktop.screensaver lock-enabled false
 gsettings set org.gnome.desktop.session idle-delay 0
