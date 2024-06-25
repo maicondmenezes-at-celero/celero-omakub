@@ -1,15 +1,23 @@
-# Exit immediately if a command exits with a non-zero status
-set -e
+# Function to record the line number and command that caused an error
+function handle_error {
+    echo "O script encontrou um erro na linha $1 ao executar o comando: $2"
+    echo "Pressione qualquer tecla para sair..."
+    read -n 1 -s
+    exit 1
+}
 
-# Determine the OS and set the environment variable
+# Set the error handler
+trap 'handle_error $LINENO "$BASH_COMMAND"' ERR
+
+# Check linux distro
 if [ -f /etc/debian_version ]; then
     export DISTRO="debian"
-    echo "Debian-based OS detected"
+    echo "Debian-based system detected"
 elif [ -f /etc/lsb-release ]; then
     export DISTRO="ubuntu"
-    echo "Ubuntu-based OS detected"
+    echo "Ubuntu-based system detected"
 else
-    echo "Unsupported OS"
+    echo "Distro not supported"
     exit 1
 fi
 
@@ -19,7 +27,7 @@ sudo apt install -y curl git unzip
 
 # Needed for debian installers
 if [ "$DISTRO" == "debian" ]; then
-        sudo apt install -y snapd
+    sudo apt install -y snapd
 fi
 
 # Ensure computer doesn't go to sleep or lock while installing
@@ -40,4 +48,4 @@ gsettings set org.gnome.desktop.session idle-delay 300
 unset DISTRO
 
 # Logout to pickup changes
-gum confirm "Ready to logout for all settings to take effect?" && gnome-session-quit --logout --no-prompt
+gum confirm "Pronto para sair para que todas as configurações entrem em vigor?" && gnome-session-quit --logout --no-prompt || echo "Configurações aplicadas. Saia manualmente quando estiver pronto."
