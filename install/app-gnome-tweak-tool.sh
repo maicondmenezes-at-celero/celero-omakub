@@ -10,3 +10,4 @@ elif [ "$DISTRO" == "debian" ]; then
 
     sudo apt install -y gnome-tweaks
 
+fi
