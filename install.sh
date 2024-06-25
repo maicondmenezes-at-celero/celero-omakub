@@ -1,7 +1,7 @@
 # Function to record the line number and command that caused an error
 function handle_error {
-    echo "O script encontrou um erro na linha $1 ao executar o comando: $2"
-    echo "Pressione qualquer tecla para sair..."
+    echo "Error on or near line $1 executing: $2"
+    echo "Press any key to exit..."
     read -n 1 -s
     exit 1
 }
