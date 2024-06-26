@@ -1,3 +1,11 @@
+# Load display functions
+source ~/.local/share/omakub/display.sh
+
+# Initialize variables
+total_scripts=$(ls ~/.local/share/omakub/install/*.sh | wc -l)
+executed_scripts=0
+start_time=$(date +%s)
+
 # Function to record the line number and script that caused an error
 function handle_error {
     local lineno="$1"
@@ -5,8 +13,9 @@ function handle_error {
     local error_message
 
     # Get the error message
-    error_message=$(tail -n 1 <<< "$BASH_COMMAND" 2>&1)
+    error_message=$(cat /tmp/error_message)
 
+    display_footer
     echo "Error on or near line $lineno executing: $script"
     echo "Error message: $error_message"
     echo "Press any key to exit..."
@@ -17,8 +26,17 @@ function handle_error {
 # Set the error handler
 trap 'handle_error $LINENO "$current_script"' ERR
 
+# Set debug handler to catch the current command
+trap 'current_command=$BASH_COMMAND' DEBUG
+
+# Redirect all errors to /tmp/error_message
+exec 2> /tmp/error_message
+
 # Set the current script name to current_script
 current_script="${BASH_SOURCE[0]}"
+
+# Display the header
+display_header
 
 # Check linux distro
 if [ -f /etc/debian_version ]; then
@@ -48,6 +66,8 @@ gsettings set org.gnome.desktop.session idle-delay 0
 # Run installers
 for script in ~/.local/share/omakub/install/*.sh; do
     current_script=$script
+    executed_scripts=$((executed_scripts + 1))
+    displaay_progress1
     source $script;
 done
 
@@ -61,5 +81,11 @@ gsettings set org.gnome.desktop.session idle-delay 300
 # Unset the DISTRO environment variable after use
 unset DISTRO
 
+# Unset error redirection
+exec 2>&1
+
+
 # Logout to pickup changes
-gum confirm "Pronto para sair para que todas as configurações entrem em vigor?" && gnome-session-quit --logout --no-prompt || echo "Configurações aplicadas. Saia manualmente quando estiver pronto."
+gum confirm "Ready to logout for all settings to take effect?" && gnome-session-quit --logout --no-prompt
+
+exit 0

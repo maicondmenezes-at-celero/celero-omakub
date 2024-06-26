@@ -31,12 +31,14 @@ elif [ "$DISTRO" == "debian" ]; then
     sudo apt update
 
     # Install Docker engine and standard plugins
-    sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 fi
 # Post-installation steps
 
-# Docker group
-sudo groupadd docker
+# Docker group if dont exist
+if ! getent group docker > /dev/null; then
+    sudo groupadd docker
+fi
 
 # Give this user privileged Docker access
 sudo usermod -aG docker ${USER}
