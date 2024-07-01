@@ -1,3 +1,6 @@
+# Title: Steam
+# Description: The popular gaming platform
+
 cd /tmp
 wget https://cdn.akamai.steamstatic.com/client/installer/steam.deb
 sudo apt install -y ./steam.deb

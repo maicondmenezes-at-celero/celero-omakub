@@ -1,0 +1,6 @@
+# Title: Flatpak
+# Description: A software utility for software deployment, application virtualization, and package management
+
+sudo apt install -y flatpak
+sudo apt install -y gnome-software-plugin-flatpak
+sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo

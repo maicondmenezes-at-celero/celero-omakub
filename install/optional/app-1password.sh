@@ -1,3 +1,7 @@
+# Title: 1Password and 1Password-CLI
+# Description: This script installs 1Password and 1Password-CLI on Debian-based systems.
+# Description: It adds the necessary repositories, keys, and policies, then installs the packages.
+
 # Install 1password and 1password-cli single script
 curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
 sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg

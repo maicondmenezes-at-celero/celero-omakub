@@ -1,3 +1,6 @@
+# Title: VirtualBox
+# Description: A powerful x86 and AMD64/Intel64 virtualization product for enterprise as well as home use
+
 # Check linux distro
 if [ "$DISTRO" == "ubuntu" ]; then
     # Virtualbox allows you to run VMs for other flavors of Linux or even Windows
