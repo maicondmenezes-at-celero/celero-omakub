@@ -24,10 +24,25 @@ download_file(){
     FILEPATH=$filepath
 }
 
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 234654DA9A296436
-download_file https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key && dearmor_gpg_key $FILEPATH /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-sudo chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-sudo chmod 644 /etc/apt/sources.list.d/kubernetes.list
-sudo apt-get update
-sudo apt-get install -y kubectl
+if [ "$DISTRO" == "ubuntu" ]; then
+    # Ubuntu-specific installation steps
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 234654DA9A296436
+    download_file https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key
+    dearmor_gpg_key $FILEPATH /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+    sudo chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+    echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+    sudo chmod 644 /etc/apt/sources.list.d/kubernetes.list
+
+elif [ "$DISTRO" == "debian" ]; then
+    # Debian-specific installation steps
+    sudo install -m 0755 -d /etc/apt/keyrings
+    sudo curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+    sudo chmod a+r /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ $(. /etc/os-release && echo "$VERSION_CODENAME") main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+    sudo chmod 644 /etc/apt/sources.list.d/kubernetes.list
+fi
+
+# Common installation steps
+sudo apt update
+sudo apt install -y kubectl
+
