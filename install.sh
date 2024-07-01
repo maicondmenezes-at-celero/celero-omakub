@@ -1,11 +1,3 @@
-# Load display functions
-source ~/.local/share/omakub/display.sh
-
-# Initialize variables
-total_scripts=$(ls ~/.local/share/omakub/install/*.sh | wc -l)
-executed_scripts=0
-start_time=$(date +%s)
-
 # Function to record the line number and script that caused an error
 function handle_error {
     local lineno="$1"
@@ -15,7 +7,6 @@ function handle_error {
     # Get the error message
     error_message=$(cat /tmp/error_message)
 
-    display_footer
     echo "Error on or near line $lineno executing: $script"
     echo "Error message: $error_message"
     echo "Press any key to exit..."
@@ -35,9 +26,6 @@ exec 2> /tmp/error_message
 # Set the current script name to current_script
 current_script="${BASH_SOURCE[0]}"
 
-# Display the header
-display_header
-
 # Check linux distro
 if [ -f /etc/debian_version ]; then
     export DISTRO="debian"
@@ -52,24 +40,38 @@ fi
 
 # Needed for all installers
 sudo apt update -y
-sudo apt install -y curl git unzip
-
-# Needed for debian installers
-if [ "$DISTRO" == "debian" ]; then
-    sudo apt install -y snapd
-fi
 
 # Ensure computer doesn't go to sleep or lock while installing
 gsettings set org.gnome.desktop.screensaver lock-enabled false
 gsettings set org.gnome.desktop.session idle-delay 0
 
-# Run installers
-for script in ~/.local/share/omakub/install/*.sh; do
+# Install libraries
+source ~/.local/share/omakub/install/essential/libraries.sh
+
+# Install essentials apps
+for script in ~/.local/share/omakub/install/essential/app-*.sh; do
     current_script=$script
-    executed_scripts=$((executed_scripts + 1))
-    displaay_progress1
+    clear
+    echo "Running $script"
+    source $script;    
+done
+
+# Set essentials
+for script in ~/.local/share/omakub/install/essential/set-*.sh; do
+    current_script=$script
+    clear
+    echo "Running $script"
     source $script;
 done
+
+# Select Optional Apps
+source ~/.local/share/omakub/install/select-optional-apps.sh
+
+# Select Development Environment
+source ~/.local/share/omakub/install/select-dev-env.sh
+
+# Set Dock favorites
+source ~/.local/share/omakub/install/set-dock-favorites.sh
 
 # Upgrade everything that might ask for a reboot last
 sudo apt upgrade -y
@@ -83,7 +85,6 @@ unset DISTRO
 
 # Unset error redirection
 exec 2>&1
-
 
 # Logout to pickup changes
 gum confirm "Ready to logout for all settings to take effect?" && gnome-session-quit --logout --no-prompt
