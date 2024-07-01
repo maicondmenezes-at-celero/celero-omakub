@@ -56,4 +56,4 @@ sudo apt install -y \
   unzip \
   wget \
   xz-utils \
-  zlib1g-dev \
+  zlib1g-dev
