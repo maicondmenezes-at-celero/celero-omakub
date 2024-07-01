@@ -48,6 +48,7 @@ sudo apt install -y \
   python3-openssl \
   python3-pip \
   redis-tools \
+  rsync \
   rustc \
   snapd \
   sqlite3 \

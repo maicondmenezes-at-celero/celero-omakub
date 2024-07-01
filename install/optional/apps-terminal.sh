@@ -1,13 +1,5 @@
 # Title: Applications for Terminal
-# Description: fzf: A command-line fuzzy finder
-# Description: ripgrep: A line-oriented search tool
-# Description: eza: A modern replacement for 'ls'
-# Description: bat: A cat clone with syntax highlighting
-# Description: zoxide: A smarter cd command
-# Description: plocate: A faster locate command
-# Description: btop: A resource monitor
-# Description: apache2-utils: Apache utility programs
-# Description: fd-find: A simple, fast and user-friendly alternative to find
+# Description: Install fzf, ripgrep, eza, bat, zoxide, plocate, btop, apache2-utils, fd-find
 
 # Check linux distro
 if [ "$DISTRO" == "ubuntu" ]; then

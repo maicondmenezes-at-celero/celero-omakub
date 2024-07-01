@@ -1,3 +1,4 @@
+clear
 # Directory containing optional app scripts
 OPTIONAL_DIR="$HOME/.local/share/omakub/install/optional"
 
@@ -56,11 +57,11 @@ for script in "$OPTIONAL_DIR"/*.sh; do
         title=$(process_script_name "$script_name")
     fi
 
-    add_app "$app_name" "${description:-$title}"
+    apps+=("$script_name")
 done
 
 # Display options using gum choose
-selected_apps=$(gum choose "${apps[@]}" --no-limit --height 7 --header "Select optional apps")
+selected_apps=$(gum choose "${apps[@]}" --no-limit --height 38 --header "Select optional apps")
 
 # Process each selected app
 for app in $selected_apps; do

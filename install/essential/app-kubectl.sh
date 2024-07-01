@@ -48,4 +48,3 @@ fi
 # Common installation steps
 sudo apt update
 sudo apt install -y kubectl
-

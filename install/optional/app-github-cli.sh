@@ -1,5 +1,5 @@
-#Title: Github CLI
-#Description: The official command line tool for Github
+# Title: Github CLI
+# Description: The official command line tool for Github
 
 curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg &&
 sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg &&
