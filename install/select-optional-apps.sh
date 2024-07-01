@@ -1,5 +1,5 @@
 # Directory containing optional app scripts
-OPTIONAL_DIR="~/.local/share/omakub/install/optional"
+OPTIONAL_DIR="$HOME/.local/share/omakub/install/optional"
 
 # Initialize arrays for different types of apps
 apps=()
