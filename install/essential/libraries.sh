@@ -1,6 +1,16 @@
 # Title: Essential libraries
 # Description: Installs essential libraries for development
 
+sudo apt update
+# Check linux distro
+
+if [ "$DISTRO" == "ubuntu" ]; then
+    sudo apt install -y libmysqlclient-dev
+
+elif [ "$DISTRO" == "debian" ]; then
+    sudo apt install -y default-libmysqlclient-dev libmariadb-dev
+fi
+
 sudo apt install -y \
   apt-transport-https \
   autoconf \
@@ -21,7 +31,6 @@ sudo apt install -y \
   libjemalloc2 \
   liblzma-dev \
   libmagickwand-dev \
-  libmysqlclient-dev \
   libncurses5-dev \
   libncursesw5-dev \
   libreadline-dev \
